@@ -1,27 +1,11 @@
-import express from 'express';
+import dotenv from 'dotenv';
+import http from 'http';
+import app from './app/app.mjs';
 
-const app = express();
-const PORT = 8000;
+dotenv.config();
+const server = http.createServer(app);
+const PORT = process.env.PORT || 8001;
 
-const simpleLogger = (req, res, next) => {
-  console.log(`${req.url} - ${req.method} - ${new Date().toString()}`);
-  next();
-};
-
-app.use(simpleLogger);
-
-app.get('/', (req, res) => {
-  res.json({
-    message: 'This is home route',
-  });
-});
-
-app.get('/about', (req, res) => {
-  res.json({
-    message: 'This is about route',
-  });
-});
-
-app.listen(PORT, () => {
-  console.log(`Server is running on PORT ${PORT}`);
+server.listen(PORT, () => {
+  console.log(`Server is listening on PORT ${PORT}`);
 });
