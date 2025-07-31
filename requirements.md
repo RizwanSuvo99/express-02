@@ -15,3 +15,15 @@ Ticket:
 -- price
 -- timestamp
 
+Routes:
+----------------------------------
+-- GET - /tickets - find all tickets
+-- POST - /tickets/sell - create tickets
+-- GET - /tickets/t/:ticketId - find single ticket
+-- PUT - /tickets/t/:ticketId - update single ticket
+-- DELETE - /tickets/t/:ticketId - delete single ticket
+-- GET - /tickets/u/:username - find tickets for a given user
+-- PATCH - /tickets/u/:username - patch update tickets for a given user
+-- DELETE - /tickets/u/:username - delete all tickets for a given user
+-- GET - /tickets/draw - raffle draw
+
