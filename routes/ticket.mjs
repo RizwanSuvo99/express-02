@@ -4,14 +4,41 @@ const ticketRouter = express.Router();
 
 ticketRouter
   .route('/t/:ticketId')
-  .get(() => {})
-  .patch(() => {})
-  .delete(() => {});
+  .get((req, res) => {
+    const ticketId = req.params.ticketId;
+    const ticket = myDB.findById(ticketId);
+    res.status(200).json({
+      message: 'Ticket getbyId successfull',
+      ticket,
+    });
+  })
+  .put((req, res) => {
+    const ticketId = req.params.ticketId;
+    const updatedTicket = myDB.updateById(ticketId, req.body);
+    res.status(200).json({
+      message: 'Ticket updated successfull',
+      updatedTicket,
+    });
+  })
+  .delete((req, res) => {
+    const ticketId = req.params.ticketId;
+    myDB.deleteById(ticketId);
+    res.status(200).json({
+      message: 'Ticket deleted successfull',
+    });
+  });
 
 ticketRouter
   .route('/u/:username')
-  .get(() => {})
-  .patch(() => {})
+  .get((req, res) => {
+    const username = req.params.username;
+    const tickets = myDB.findByUsername(username);
+    res.status(200).json({
+      message: 'Tickets Find by username successfull',
+      tickets,
+    });
+  })
+  .put(() => {})
   .delete(() => {});
 
 ticketRouter.post('/sell', (req, res) => {
