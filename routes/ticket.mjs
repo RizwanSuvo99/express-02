@@ -7,10 +7,7 @@ ticketRouter
   .get((req, res) => {
     const ticketId = req.params.ticketId;
     const ticket = myDB.findById(ticketId);
-    res.status(200).json({
-      message: 'Ticket getbyId successfull',
-      ticket,
-    });
+    res.status(200).json(ticket);
   })
   .put((req, res) => {
     const ticketId = req.params.ticketId;
@@ -41,14 +38,27 @@ ticketRouter
   .put(() => {})
   .delete(() => {});
 
-ticketRouter.post('/sell', (req, res) => {
-  const { username, price } = req.body;
-  const ticket = myDB.create(username, price);
-  res.status(201).json({
-    message: 'Ticket Created Successfully',
-    ticket,
-  });
-});
+ticketRouter.post(
+  '/sell',
+  (req, res, next) => {
+    const { username, price } = req.body;
+    if (!username || !price) {
+      res.status(400).json({
+        message: 'Missing items to create a ticket',
+      });
+    } else {
+      next();
+    }
+  },
+  (req, res) => {
+    const { username, price } = req.body;
+    const ticket = myDB.create(username, price);
+    res.status(201).json({
+      message: 'Ticket Created Successfully',
+      ticket,
+    });
+  }
+);
 ticketRouter.post('/bulk', (req, res) => {
   const { username, price, quantity } = req.body;
   const tickets = myDB.bulkCreate(username, price, quantity);
@@ -67,10 +77,7 @@ ticketRouter.get('/draw', (req, res) => {
 });
 ticketRouter.get('', (req, res) => {
   const tickets = myDB.find();
-  res.status(200).json({
-    message: 'All tickets find successfull',
-    tickets,
-  });
+  res.status(200).json(tickets);
 });
 
 export default ticketRouter;
