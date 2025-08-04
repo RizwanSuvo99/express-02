@@ -35,8 +35,31 @@ ticketRouter
       tickets,
     });
   })
-  .put(() => {})
-  .delete(() => {});
+  .put((req, res) => {
+    const username = req.params.username;
+    const { price } = req.body;
+    const updatedTickets = myDB.updateByUsername(username, req.body);
+    res.status(200).json({
+      message: 'All tickets updated successfully',
+      updatedTickets,
+    });
+  })
+  .patch((req, res) => {
+    const username = req.params.username;
+    const updatedTickets = myDB.updateByUsername(username, req.body);
+    res.status(200).json({
+      message: 'All tickets patched successfully',
+      updatedTickets,
+    });
+  })
+  .delete((req, res) => {
+    const username = req.params.username;
+    const deletedCount = myDB.deleteByUsername(username);
+    res.status(200).json({
+      message: 'All tickets deleted successfully',
+      deletedCount,
+    });
+  });
 
 ticketRouter.post(
   '/sell',

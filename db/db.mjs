@@ -1,6 +1,35 @@
 import Ticket from '../models/Ticket.mjs';
 
 class MyDB {
+  /**
+   * Update all tickets for a given user
+   * @param {string} username
+   * @param {{username?: string, price?: number}} ticketBody
+   * @returns {Array<Ticket>} updated tickets
+   */
+  updateByUsername(username, ticketBody) {
+    const tickets = this.findByUsername(username);
+    tickets.forEach((ticket) => {
+      if (ticketBody.username !== undefined)
+        ticket.username = ticketBody.username;
+      if (ticketBody.price !== undefined) ticket.price = ticketBody.price;
+      ticket.updatedAt = new Date();
+    });
+    return tickets;
+  }
+
+  /**
+   * Delete all tickets for a given user
+   * @param {string} username
+   * @returns {number} number of deleted tickets
+   */
+  deleteByUsername(username) {
+    const before = this.tickets.length;
+    this.tickets = this.tickets.filter(
+      (ticket) => ticket.username !== username
+    );
+    return before - this.tickets.length;
+  }
   constructor() {
     this.tickets = [];
   }
